@@ -37,7 +37,7 @@ namespace MicMute
         private string selectedDeviceId;
         private string selectedDeviceName;
         private MicSelectorForm micSelectorForm;
-
+        private MicStatusForm micStatusForm;
 
         enum MicStatus
         {
@@ -116,6 +116,24 @@ namespace MicMute
             //{
             //    Debug.WriteLine("{0} - {1}", x.Device.Name, x.ChangedType.ToString());
             //});
+            
+            if(Properties.Settings.Default.EnableMicStatusOverlay)
+            {
+                this.mnuItemMicStatusOverlay.Checked = true;
+                ShowMicStatusOverlay();
+            }
+        }
+
+        private void ShowMicStatusOverlay()
+        {
+            micStatusForm = new MicStatusForm();
+            micStatusForm.Show();
+            micStatusForm.Activate();
+            micStatusForm.FormClosing += (s, e) =>
+            {
+                mnuItemMicStatusOverlay.Checked = false;
+            };
+            UpdateSelectedDevice();
         }
 
         private void OnMuteChanged(DeviceMuteChangedArgs next)
@@ -157,16 +175,30 @@ namespace MicMute
         public void UpdateStatus(IDevice device)
         {
             MicStatus newStatus = (device != null) ? (device.IsMuted ? MicStatus.Off : MicStatus.On) : MicStatus.Error;
+            //if(micStatusForm == null)
+            //{
+            //    micStatusForm = new MicStatusForm();
+            //    micStatusForm.Show(this);
+            //}
             bool playSound = currentStatus != MicStatus.Initial && currentStatus != newStatus;
             currentStatus = newStatus;
             switch (currentStatus)
             {
                 case MicStatus.On:
                     UpdateIcon(iconOn, device.FullName);
+                    if (micStatusForm != null)
+                    {
+                        //micStatusForm.Invoke()
+                        micStatusForm.SetMicState(MicMute.MicStatusResources.micon);
+                    }
                     if (playSound) PlaySound("on.wav");
                     break;
                 case MicStatus.Off:
                     UpdateIcon(iconOff, device.FullName);
+                    if (micStatusForm != null)
+                    {
+                        micStatusForm.SetMicState(MicMute.MicStatusResources.micoff);
+                    }
                     if (playSound) PlaySound("off.wav");
                     break;
                 case MicStatus.Error:
@@ -363,6 +395,22 @@ namespace MicMute
             micSelectorForm.Dispose();
 
             UpdateSelectedDevice();
+        }
+
+        private void OnToggleMicStatusOverlay(object sender, EventArgs e)
+        {
+            this.mnuItemMicStatusOverlay.Checked = !this.mnuItemMicStatusOverlay.Checked;
+            Properties.Settings.Default.EnableMicStatusOverlay = this.mnuItemMicStatusOverlay.Checked;
+            Properties.Settings.Default.Save();
+            if ((micStatusForm == null || micStatusForm.IsDisposed ) && Properties.Settings.Default.EnableMicStatusOverlay)
+            {
+                ShowMicStatusOverlay();
+            }
+            else if (micStatusForm != null && !micStatusForm.IsDisposed)
+            {
+                micStatusForm.Close();
+                micStatusForm = null;
+            }            
         }
     }
 }

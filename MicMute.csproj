@@ -16,6 +16,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -28,7 +29,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -71,6 +71,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Reactive.Core, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>packages\System.Reactive.Core.3.1.1\lib\net45\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -111,6 +112,17 @@
     <Compile Include="MicSelectorForm.Designer.cs">
       <DependentUpon>MicSelectorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MicStatusForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MicStatusForm.Designer.cs">
+      <DependentUpon>MicStatusForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MicStatusResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MicStatusResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MainForm.resx">
@@ -118,6 +130,13 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MicSelectorForm.resx">
       <DependentUpon>MicSelectorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MicStatusForm.resx">
+      <DependentUpon>MicStatusForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MicStatusResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MicStatusResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -144,6 +163,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\baseline_mic_black_24dp.png" />
+    <None Include="Resources\baseline_mic_off_black_24dp.png" />
     <None Include="Assets\on.ico" />
     <None Include="Assets\off.ico" />
     <None Include="Assets\error.ico" />
