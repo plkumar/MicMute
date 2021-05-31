@@ -1,5 +1,6 @@
 ﻿using AudioSwitcher.AudioApi;
 using AudioSwitcher.AudioApi.CoreAudio;
+using MicMute.Properties;
 using Microsoft.Win32;
 using Shortcut;
 using System;
@@ -201,7 +202,7 @@ namespace MicMute
                     if (micStatusForm != null)
                     {
                         //micStatusForm.Invoke()
-                        micStatusForm.SetMicState(MicMute.MicStatusResources.micon);
+                        micStatusForm.SetMicState(Resources.micunmuted);
                     }
                     if (playSound) PlaySound("on.wav");
                     break;
@@ -209,7 +210,7 @@ namespace MicMute
                     UpdateIcon(iconOff, device.FullName);
                     if (micStatusForm != null)
                     {
-                        micStatusForm.SetMicState(MicMute.MicStatusResources.micoff);
+                        micStatusForm.SetMicState(Resources.micmuted);
                     }
                     if (playSound) PlaySound("off.wav");
                     break;
