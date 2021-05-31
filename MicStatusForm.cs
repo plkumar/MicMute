@@ -62,6 +62,18 @@ namespace MicMute
         [DllImport("user32.dll", EntryPoint = "SetLayeredWindowAttributes")]
         private static extern bool User32_SetLayeredWindowAttributes(IntPtr hWnd, int crKey, byte bAlpha, LayeredWindowAttributes dwFlags);
 
+
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn
+        (
+            int nLeftRect,     // x-coordinate of upper-left corner
+            int nTopRect,      // y-coordinate of upper-left corner
+            int nRightRect,    // x-coordinate of lower-right corner
+            int nBottomRect,   // y-coordinate of lower-right corner
+            int nWidthEllipse, // width of ellipse
+            int nHeightEllipse // height of ellipse
+        );
+
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
@@ -96,13 +108,13 @@ namespace MicMute
             //Change alpha
             //User32_SetLayeredWindowAttributes(this.Handle, (TransparencyKey.B << 16) + (TransparencyKey.G << 8) + TransparencyKey.R, _alpha, LayeredWindowAttributes.LWA_COLORKEY | LayeredWindowAttributes.LWA_ALPHA);
             User32_SetLayeredWindowAttributes(this.Handle, 0, 128, LayeredWindowAttributes.LWA_ALPHA);
+            Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 50, 50));
         }
 
         public MicStatusForm()
         {
             InitializeComponent();
             _defaultStyle = User32_GetWindowLong(this.Handle, GetWindowLong.GWL_EXSTYLE);
-            //SetMicState();
             TopMost = true;
         }
 

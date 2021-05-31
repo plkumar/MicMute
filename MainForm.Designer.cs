@@ -78,7 +78,7 @@
             // 
             this.hotkeyToolStripMenuItem.Name = "hotkeyToolStripMenuItem";
             this.hotkeyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.hotkeyToolStripMenuItem.Text = "Hotkey";
+            this.hotkeyToolStripMenuItem.Text = "Settings";
             this.hotkeyToolStripMenuItem.Click += new System.EventHandler(this.HotkeyToolStripMenuItem_Click);
             // 
             // mnuItemMicStatusOverlay

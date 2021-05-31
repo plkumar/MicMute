@@ -119,13 +119,25 @@ namespace MicMute
             
             if(Properties.Settings.Default.EnableMicStatusOverlay)
             {
+                this.chkShowMicStatus.Checked = Properties.Settings.Default.EnableMicStatusOverlay;
                 this.mnuItemMicStatusOverlay.Checked = true;
                 ShowMicStatusOverlay();
             }
         }
 
+        private void CloseMicStatusOverlay()
+        {
+            if (micStatusForm != null)
+            {
+                micStatusForm.Close();
+                micStatusForm.Dispose();
+                micStatusForm = null;
+            }
+        }
+
         private void ShowMicStatusOverlay()
         {
+            CloseMicStatusOverlay();
             micStatusForm = new MicStatusForm();
             micStatusForm.Show();
             micStatusForm.Activate();
@@ -315,6 +327,17 @@ namespace MicMute
                     }
                 }
 
+                Properties.Settings.Default.EnableMicStatusOverlay = chkShowMicStatus.Checked;
+                Properties.Settings.Default.Save();
+
+                if (Properties.Settings.Default.EnableMicStatusOverlay)
+                {
+                    ShowMicStatusOverlay();
+                }
+                else
+                {
+                    CloseMicStatusOverlay();
+                }
             }
         }
 
@@ -337,6 +360,12 @@ namespace MicMute
 
         private void ExitMenuItem_Click(object sender, EventArgs e)
         {
+            if (micStatusForm != null)
+            {
+                micStatusForm.Close();
+                micStatusForm.Dispose();
+                micStatusForm = null;
+            }
             Application.Exit();
         }
 
@@ -404,12 +433,12 @@ namespace MicMute
             Properties.Settings.Default.Save();
             if ((micStatusForm == null || micStatusForm.IsDisposed ) && Properties.Settings.Default.EnableMicStatusOverlay)
             {
+                this.chkShowMicStatus.Checked = true;
                 ShowMicStatusOverlay();
             }
             else if (micStatusForm != null && !micStatusForm.IsDisposed)
             {
-                micStatusForm.Close();
-                micStatusForm = null;
+                CloseMicStatusOverlay();
             }            
         }
     }
