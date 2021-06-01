@@ -15,6 +15,8 @@ namespace MicMute
 {
     public partial class MicStatusForm : Form
     {
+        private const byte _opaque = 255;
+
         /// <summary>
         /// 0: the window is completely transparent ... 255: the window is opaque
         /// </summary>
@@ -82,7 +84,7 @@ namespace MicMute
             User32_SetWindowLong(this.Handle, GetWindowLong.GWL_EXSTYLE, wl | (int)ExtendedWindowStyles.WS_EX_LAYERED | (int)ExtendedWindowStyles.WS_EX_TRANSPARENT);
             //Change alpha
             //User32_SetLayeredWindowAttributes(this.Handle, (TransparencyKey.B << 16) + (TransparencyKey.G << 8) + TransparencyKey.R, _alpha, LayeredWindowAttributes.LWA_COLORKEY | LayeredWindowAttributes.LWA_ALPHA);
-            User32_SetLayeredWindowAttributes(this.Handle, 0, 128, LayeredWindowAttributes.LWA_ALPHA);
+            User32_SetLayeredWindowAttributes(this.Handle, 0, _alpha, LayeredWindowAttributes.LWA_ALPHA);
         }
 
         protected override void OnActivated(EventArgs e)
@@ -94,7 +96,7 @@ namespace MicMute
             User32_SetWindowLong(this.Handle, GetWindowLong.GWL_EXSTYLE, _defaultStyle);
             //Change alpha
             //User32_SetLayeredWindowAttributes(this.Handle, (TransparencyKey.B << 16) + (TransparencyKey.G << 8) + TransparencyKey.R, _alpha, LayeredWindowAttributes.LWA_COLORKEY | LayeredWindowAttributes.LWA_ALPHA);
-            User32_SetLayeredWindowAttributes(this.Handle, 0, 255, LayeredWindowAttributes.LWA_ALPHA);
+            User32_SetLayeredWindowAttributes(this.Handle, 0, _opaque, LayeredWindowAttributes.LWA_ALPHA);
             this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
         }
 
@@ -107,7 +109,7 @@ namespace MicMute
             User32_SetWindowLong(this.Handle, GetWindowLong.GWL_EXSTYLE, wl | (int)ExtendedWindowStyles.WS_EX_LAYERED | (int)ExtendedWindowStyles.WS_EX_TRANSPARENT);
             //Change alpha
             //User32_SetLayeredWindowAttributes(this.Handle, (TransparencyKey.B << 16) + (TransparencyKey.G << 8) + TransparencyKey.R, _alpha, LayeredWindowAttributes.LWA_COLORKEY | LayeredWindowAttributes.LWA_ALPHA);
-            User32_SetLayeredWindowAttributes(this.Handle, 0, 128, LayeredWindowAttributes.LWA_ALPHA);
+            User32_SetLayeredWindowAttributes(this.Handle, 0, _alpha, LayeredWindowAttributes.LWA_ALPHA);
             Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 50, 50));
         }
 
@@ -116,6 +118,8 @@ namespace MicMute
             InitializeComponent();
             _defaultStyle = User32_GetWindowLong(this.Handle, GetWindowLong.GWL_EXSTYLE);
             TopMost = true;
+            BackColor = Properties.Settings.Default.MicStatusFormBackground;
+            _alpha = Properties.Settings.Default.MicStatusFormTranparency;
         }
 
         public void SetMicState(Image image)

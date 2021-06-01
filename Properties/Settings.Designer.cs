@@ -46,5 +46,29 @@ namespace MicMute.Properties {
                 this["EnableMicStatusOverlay"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("224, 224, 224")]
+        public global::System.Drawing.Color MicStatusFormBackground {
+            get {
+                return ((global::System.Drawing.Color)(this["MicStatusFormBackground"]));
+            }
+            set {
+                this["MicStatusFormBackground"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("128")]
+        public byte MicStatusFormTranparency {
+            get {
+                return ((byte)(this["MicStatusFormTranparency"]));
+            }
+            set {
+                this["MicStatusFormTranparency"] = value;
+            }
+        }
     }
 }

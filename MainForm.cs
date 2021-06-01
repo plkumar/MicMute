@@ -122,6 +122,8 @@ namespace MicMute
             {
                 this.chkShowMicStatus.Checked = Properties.Settings.Default.EnableMicStatusOverlay;
                 this.mnuItemMicStatusOverlay.Checked = true;
+                this.trackBarTransparency.Value = Properties.Settings.Default.MicStatusFormTranparency;
+                this.labelBackgroundColor.BackColor = Properties.Settings.Default.MicStatusFormBackground;
                 ShowMicStatusOverlay();
             }
         }
@@ -329,6 +331,8 @@ namespace MicMute
                 }
 
                 Properties.Settings.Default.EnableMicStatusOverlay = chkShowMicStatus.Checked;
+                Properties.Settings.Default.MicStatusFormTranparency = (byte)trackBarTransparency.Value;
+                Properties.Settings.Default.MicStatusFormBackground = colorDialog1.Color;
                 Properties.Settings.Default.Save();
 
                 if (Properties.Settings.Default.EnableMicStatusOverlay)
@@ -441,6 +445,20 @@ namespace MicMute
             {
                 CloseMicStatusOverlay();
             }            
+        }
+
+        private void chkShowMicStatus_CheckedChanged(object sender, EventArgs e)
+        {
+            //panelTransparentOverlaySettings.Visible = chkShowMicStatus.Checked;
+            panelTransparentOverlaySettings.Visible = chkShowMicStatus.Checked;
+        }
+
+        private void labelBackgroundColor_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                labelBackgroundColor.BackColor = colorDialog1.Color;
+            }
         }
     }
 }
