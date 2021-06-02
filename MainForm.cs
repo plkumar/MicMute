@@ -124,6 +124,7 @@ namespace MicMute
                 this.mnuItemMicStatusOverlay.Checked = true;
                 this.trackBarTransparency.Value = Properties.Settings.Default.MicStatusFormTranparency;
                 this.labelBackgroundColor.BackColor = Properties.Settings.Default.MicStatusFormBackground;
+                this.colorDialog1.Color = Properties.Settings.Default.MicStatusFormBackground;
                 ShowMicStatusOverlay();
             }
         }
@@ -332,7 +333,7 @@ namespace MicMute
 
                 Properties.Settings.Default.EnableMicStatusOverlay = chkShowMicStatus.Checked;
                 Properties.Settings.Default.MicStatusFormTranparency = (byte)trackBarTransparency.Value;
-                Properties.Settings.Default.MicStatusFormBackground = colorDialog1.Color;
+                Properties.Settings.Default.MicStatusFormBackground = labelBackgroundColor.BackColor;
                 Properties.Settings.Default.Save();
 
                 if (Properties.Settings.Default.EnableMicStatusOverlay)

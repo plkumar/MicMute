@@ -16,10 +16,21 @@ namespace MicMute
         [STAThread]
         static void Main()
         {
+            bool result;
+            var mutex = new System.Threading.Mutex(true, "MicMute", out result);
+
+            if (!result)
+            {
+                MessageBox.Show("Another instance of MicMute is already running.");
+                return;
+            }
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             mf = new MainForm();
             Application.Run(mf);
+
+            GC.KeepAlive(mutex);
         }
     }
 }
