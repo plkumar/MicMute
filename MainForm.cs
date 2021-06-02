@@ -40,6 +40,8 @@ namespace MicMute
         private MicSelectorForm micSelectorForm;
         private MicStatusForm micStatusForm;
 
+        RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+
         enum MicStatus
         {
             Initial, On, Off, Error
@@ -56,6 +58,17 @@ namespace MicMute
         public MainForm()
         {
             InitializeComponent();
+
+            if (rkApp.GetValue("MyApp") == null)
+            {
+                // The value doesn't exist, the application is not set to run at startup
+                chkRunAtLogin.Checked = false;
+            }
+            else
+            {
+                // The value exists, the application is set to run at startup
+                chkRunAtLogin.Checked = true;
+            }
         }
 
         private void OnNextDevice(DeviceChangedArgs next)
@@ -343,6 +356,17 @@ namespace MicMute
                 else
                 {
                     CloseMicStatusOverlay();
+                }
+
+                if (chkRunAtLogin.Checked)
+                {
+                    // Add the value in the registry so that the application runs at startup
+                    rkApp.SetValue("MicMute", Application.ExecutablePath);
+                }
+                else
+                {
+                    // Remove the value from the registry so that the application doesn't start
+                    rkApp.DeleteValue("MicMute", false);
                 }
             }
         }
