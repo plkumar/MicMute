@@ -1,5 +1,6 @@
 ﻿using AudioSwitcher.AudioApi;
 using AudioSwitcher.AudioApi.CoreAudio;
+using MicMute.Properties;
 using Microsoft.Win32;
 using Shortcut;
 using System;
@@ -39,6 +40,8 @@ namespace MicMute
         private MicSelectorForm micSelectorForm;
         private MicStatusForm micStatusForm;
 
+        RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+
         enum MicStatus
         {
             Initial, On, Off, Error
@@ -55,6 +58,17 @@ namespace MicMute
         public MainForm()
         {
             InitializeComponent();
+
+            if (rkApp.GetValue("MyApp") == null)
+            {
+                // The value doesn't exist, the application is not set to run at startup
+                chkRunAtLogin.Checked = false;
+            }
+            else
+            {
+                // The value exists, the application is set to run at startup
+                chkRunAtLogin.Checked = true;
+            }
         }
 
         private void OnNextDevice(DeviceChangedArgs next)
@@ -121,6 +135,9 @@ namespace MicMute
             {
                 this.chkShowMicStatus.Checked = Properties.Settings.Default.EnableMicStatusOverlay;
                 this.mnuItemMicStatusOverlay.Checked = true;
+                this.trackBarTransparency.Value = Properties.Settings.Default.MicStatusFormTranparency;
+                this.labelBackgroundColor.BackColor = Properties.Settings.Default.MicStatusFormBackground;
+                this.colorDialog1.Color = Properties.Settings.Default.MicStatusFormBackground;
                 ShowMicStatusOverlay();
             }
         }
@@ -201,7 +218,7 @@ namespace MicMute
                     if (micStatusForm != null)
                     {
                         //micStatusForm.Invoke()
-                        micStatusForm.SetMicState(MicMute.MicStatusResources.micon);
+                        micStatusForm.SetMicState(Resources.micunmuted);
                     }
                     if (playSound) PlaySound("on.wav");
                     break;
@@ -209,7 +226,7 @@ namespace MicMute
                     UpdateIcon(iconOff, device.FullName);
                     if (micStatusForm != null)
                     {
-                        micStatusForm.SetMicState(MicMute.MicStatusResources.micoff);
+                        micStatusForm.SetMicState(Resources.micmuted);
                     }
                     if (playSound) PlaySound("off.wav");
                     break;
@@ -328,6 +345,8 @@ namespace MicMute
                 }
 
                 Properties.Settings.Default.EnableMicStatusOverlay = chkShowMicStatus.Checked;
+                Properties.Settings.Default.MicStatusFormTranparency = (byte)trackBarTransparency.Value;
+                Properties.Settings.Default.MicStatusFormBackground = labelBackgroundColor.BackColor;
                 Properties.Settings.Default.Save();
 
                 if (Properties.Settings.Default.EnableMicStatusOverlay)
@@ -337,6 +356,17 @@ namespace MicMute
                 else
                 {
                     CloseMicStatusOverlay();
+                }
+
+                if (chkRunAtLogin.Checked)
+                {
+                    // Add the value in the registry so that the application runs at startup
+                    rkApp.SetValue("MicMute", Application.ExecutablePath);
+                }
+                else
+                {
+                    // Remove the value from the registry so that the application doesn't start
+                    rkApp.DeleteValue("MicMute", false);
                 }
             }
         }
@@ -440,6 +470,20 @@ namespace MicMute
             {
                 CloseMicStatusOverlay();
             }            
+        }
+
+        private void chkShowMicStatus_CheckedChanged(object sender, EventArgs e)
+        {
+            //panelTransparentOverlaySettings.Visible = chkShowMicStatus.Checked;
+            panelTransparentOverlaySettings.Visible = chkShowMicStatus.Checked;
+        }
+
+        private void labelBackgroundColor_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                labelBackgroundColor.BackColor = colorDialog1.Color;
+            }
         }
     }
 }

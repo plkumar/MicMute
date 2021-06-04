@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>MicMute</RootNamespace>
     <AssemblyName>MicMute</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -118,11 +118,6 @@
     <Compile Include="MicStatusForm.Designer.cs">
       <DependentUpon>MicStatusForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MicStatusResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MicStatusResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MainForm.resx">
@@ -133,10 +128,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MicStatusForm.resx">
       <DependentUpon>MicStatusForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MicStatusResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>MicStatusResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
